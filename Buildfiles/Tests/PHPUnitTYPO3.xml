@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ * Copyright (c) 2012, Andreas Lappe
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ * 
+ * - Redistributions of source code must retain the above copyright notice,
+ *   this list of conditions and the following disclaimer.
+ * - Redistributions in binary form must reproduce the above copyright
+ *   notice, this list of conditions and the following disclaimer in the
+ *   documentation and/or other materials provided with the distribution.
+ * - Neither the name of the kuehlhaus AG nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<!--
+ *
+ * This buildfile executes the cli_dispatch with the phpunit extension of TYPO3
+ * to ensure a working extension in the extbase/TYPO3 context.
+ *
+-->
+<project name="PHPUnitTYPO3">
+	<!-- Get current working directory to copy the extension -->
+	<exec command="pwd" outputProperty="PWD" />
+	<echo message="PWD: ${PWD}" />
+	<property name="tests.phpunittypo3.typo3installationpath" value="/opt/local/apache2/htdocs/introductionpackage-4.5.3" />
+	<property name="tests.phpunittypo3.typo3cli" value="${tests.phpunittypo3.typo3installationpath}/typo3/cli_dispatch.phpsh" />
+	<property name="tests.phpunittypo3.collectcodecoverage" value="true" />
+	<property name="tests.phpunittypo3.coveragedir" value="build/coverage/" />
+	<property name="tests.phpunittypo3.junitfile" value="build/logs/junit/phpunit.xml" />
+
+	<if>
+		<equals arg1="${tests.phpunittypo3.run}" arg2="true" />
+		<then>
+
+			<!-- Execute helper script to prepare TYPO3-installation -->
+			<exec command="${buildfileDirectory}/Tests/Helper/prepare.sh clean ${extension} ${tests.phpunittypo3.typo3installationpath}" logoutput="TRUE" passthru="TRUE" escape="FALSE" checkreturn="TRUE" />
+
+			<copy todir="${tests.phpunittypo3.typo3installationpath}/typo3conf/ext/${extension}">
+				<fileset dir="${PWD}" />
+			</copy>
+
+			<exec command="${buildfileDirectory}/Tests/Helper/prepare.sh install ${extension} ${tests.phpunittypo3.typo3installationpath}" logoutput="TRUE" passthru="TRUE" escape="FALSE" checkreturn="TRUE" />
+
+			<if>
+				<equals arg1="${tests.phpunittypo3.collectcodecoverage}" arg2="true" />
+				<then>
+					<exec command="${tests.phpunittypo3.typo3cli} phpunit --coverage-html ${PWD}/${tests.phpunittypo3.coveragedir} --coverage-clover ${PWD}/${tests.phpunittypo3.coveragedir}coverage.xml --log-junit ${PWD}/${tests.phpunittypo3.junitfile} ${tests.phpunittypo3.typo3installationpath}/typo3conf/ext/${extension}" logoutput="TRUE" passthru="TRUE" escape="FALSE" checkreturn="TRUE" />
+				</then>
+				<else>
+					<exec command="${tests.phpunittypo3.typo3cli} phpunit ${tests.phpunittypo3.typo3installationpath}/typo3conf/ext/${extension}" logoutput="TRUE" passthru="TRUE" escape="FALSE" checkreturn="TRUE" />
+				</else>
+			</if>
+		</then>
+	</if>
+</project>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ * Copyright (c) 2012, Andreas Lappe
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ * 
+ * - Redistributions of source code must retain the above copyright notice,
+ *   this list of conditions and the following disclaimer.
+ * - Redistributions in binary form must reproduce the above copyright
+ *   notice, this list of conditions and the following disclaimer in the
+ *   documentation and/or other materials provided with the distribution.
+ * - Neither the name of the kuehlhaus AG nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<!--
+ *
+ * Main build file… 
+ *
+-->
+<project name="phing-build" default="all">
+
+	<!--
+	 * Property file. Override values here…
+	 -->
+	<property file="build.properties" />
+
+	<!--
+	 * Directory to find more build files included further down
+	 -->
+	<property name="buildfileDirectory" value="Resources/Private/Phing/Buildfiles" />
+
+	<!--
+	 * Add the directory structure for logs/coverage before writing
+	 * to it!
+	 -->
+	<mkdir dir="build/logs" />
+	<mkdir dir="build/coverage" />
+
+	<!--
+	 * Execute the main blocks… comment here to omit a whole
+	 * section…
+	 -->
+	<target name="all">
+		<phingcall target="lint" />
+		<phingcall target="security" />
+		<phingcall target="quality" />
+		<phingcall target="unittests" />
+		<phingcall target="documentation" />
+	</target>
+
+	<!--
+	 * Basic lint checks… execute them right in the beginning, as
+	 * you do not have to continue if you have basic syntax errors
+	 * in your code!
+	 -->
+	<target name="lint">
+		<!-- JSHint, a better version of DC's lint: -->
+		<import file="${buildfileDirectory}/Lint/JSHint.xml" />
+
+		<!-- JSLLint, deprecated… use JSHint! -->
+		<!--
+		<import file="Buildfiles/Lint/JSLLint.xml" />
+		-->
+
+		<!-- PHPLint: -->
+		<import file="${buildfileDirectory}/Lint/PHPLint.xml" />
+	</target>
+
+	<!--
+	 * Security-checks
+	 *
+	 * This is really basic stuff, so please code right!
+	 -->
+	<target name="security">
+		<!-- Check if certain directories are secured by .htaccess files -->
+		<import file="${buildfileDirectory}/Security/HTAccess.xml" />
+	</target>
+
+	<!--
+	 * Run some quality checks on your code
+	 -->
+	<target name="quality">
+		<!-- PHP Mess Detector -->
+		<import file="${buildfileDirectory}/Quality/PHPMessDetector.xml" />
+
+		<!-- PHP Copy and Paste Detector -->
+		<import file="${buildfileDirectory}/Quality/PHPCopyAndPasteDetector.xml" />
+
+		<!-- CodeSniffer to assure CGL-compliance -->
+		<import file="${buildfileDirectory}/Quality/CodeSniffer.xml" />
+	</target>
+
+	<!--
+	 * UnitTests for PHP, JS and whatever else you need
+	 -->
+	<target name="unittests">
+		<!-- PHPUnitTYPO3, executes the cli-dispatch with the phpunit ext: -->
+		<import file="${buildfileDirectory}/Tests/PHPUnitTYPO3.xml" />
+
+		<!-- Jasmine Tests… -->
+		<import file="${buildfileDirectory}/Tests/Jasmine.xml" />
+	</target>
+
+	<target name="jasmine">
+		<import file="${buildfileDirectory}/Tests/Jasmine.xml" />
+	</target>
+
+	<!--
+	 * Documentation
+	 * 
+	 * Generate API Documentation, maybe when convert or compile generic
+	 * documentation…
+	 -->
+	<target name="documentation">
+		<!-- PHPDocumentor: -->
+		<import file="${buildfileDirectory}/Documentation/PHPDocumentor.xml" />
+	</target>
+</project>

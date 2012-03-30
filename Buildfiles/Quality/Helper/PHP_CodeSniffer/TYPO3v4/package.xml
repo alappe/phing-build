@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.9.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+    http://pear.php.net/dtd/tasks-1.0.xsd
+    http://pear.php.net/dtd/package-2.0
+    http://pear.php.net/dtd/package-2.0.xsd">
+	<name>PHPCS_TYPO3v4_Standard</name>
+	<channel>pear.typo3.org</channel>
+	<summary>TYPO3v4 Coding Standard</summary>
+	<description>This package contains a selection of sniffs which implements the Coding Guidelines for the Version 4 of TYPO3. Additionally you must install the pear.typo3.org/PHPCS_TYPO3_Standard_Pool package.</description>
+	<lead>
+		<name>Stefano Kowalke</name>
+		<user>sok</user>
+		<email>blueduck@gmx.net</email>
+		<active>yes</active>
+	</lead>
+	<lead>
+		<name>Andy Grunwald</name>
+		<user>sermerlie</user>
+		<email>andy_grunwald@arcor.de</email>
+		<active>yes</active>
+	</lead>
+	<developer>
+		<name>Laura Thewalt</name>
+		<user>edcbylt</user>
+		<email>laura.thewalt@wmdb.de</email>
+		<active>yes</active>
+	</developer>
+	<date>2011-01-14</date>
+	<time>22:41:42</time>
+	<version>
+		<release>0.0.3</release>
+		<api>0.0.3</api>
+	</version>
+	<stability>
+		<release>alpha</release>
+		<api>alpha</api>
+	</stability>
+	<license uri="http://www.gnu.org/licenses/gpl.html">GPL</license>
+	<notes>
+		- Add feature #11944: Activate Generic.CodeAnalysis.UnusedFunctionParameter
+		- Add feature #11943: Activate PEAR.Functions.ValidDefaultValue Sniff
+	</notes>
+	<contents>
+ 		<dir name="/">
+			<file baseinstalldir="PHP/CodeSniffer/Standards/TYPO3v4" name="ruleset.xml" role="php" />
+		</dir>
+	</contents>
+	<dependencies>
+		<required>
+			<php>
+				<min>5</min>
+			</php>
+			<pearinstaller>
+				<min>1.4.0</min>
+			</pearinstaller>
+			<package>
+				<name>PHP_CodeSniffer</name>
+				<channel>pear.php.net</channel>
+				<min>1.3.0RC1</min>
+			</package>
+			<package>
+				<name>PHPCS_TYPO3_SniffPool</name>
+				<channel>pear.typo3.org</channel>
+				<min>0.0.3</min>
+				<max>0.0.3</max>
+			</package>
+		</required>
+	</dependencies>
+	<phprelease />
+	<changelog>
+		<release>
+			<version>
+				<release>0.0.2</release>
+				<api>0.0.2</api>
+			</version>
+			<stability>
+				<release>alpha</release>
+				<api>alpha</api>
+			</stability>
+				<date>2010-12-14</date>
+			<license uri="http://www.gnu.org/licenses/gpl.html">GPL</license>
+			<notes>
+				- Add a check for XClass declaration
+				- Add a check for UTF-8 encoding
+			</notes>
+		</release>
+		<release>
+			<version>
+				<release>0.0.1</release>
+				<api>0.0.1</api>
+			</version>
+			<stability>
+				<release>alpha</release>
+				<api>alpha</api>
+			</stability>
+			<date>2010-10-04</date>
+			<license uri="http://www.gnu.org/licenses/gpl.html">GPL</license>
+			<notes>Initial release</notes>
+		</release>
+	</changelog>
+</package>
