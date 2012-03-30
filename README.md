@@ -12,20 +12,17 @@ warnings.
 
 From within your extension:
 
-```[…/typo3conf/ext] % git submodule add git@github.com:alappe/phing-build.git Resources/Private/Phing
-[…/typo3conf/ext] % ln -s Resources/Private/Phing/build.xml .
-[…/typo3conf/ext] % cp Resources/Private/Phing/build.properties .
-[…/typo3conf/ext] % 
-```
+    […/typo3conf/ext] % git submodule add git@github.com:alappe/phing-build.git Resources/Private/Phing
+    […/typo3conf/ext] % ln -s Resources/Private/Phing/build.xml .
+    […/typo3conf/ext] % cp Resources/Private/Phing/build.properties .
+    […/typo3conf/ext] % 
 
 Then edit your build.properties file to adjust it to your environment.
 
 It's run with either one of the defined targets directly:
 
-```[…/typo3conf/ext] % phing lint
-```
+    […/typo3conf/ext] % phing lint
 
 Or with the default target, which runs all defined targets:
 
-```[…/typo3conf/ext] % phing
-```
+    […/typo3conf/ext] % phing
